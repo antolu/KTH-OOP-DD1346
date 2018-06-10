@@ -1,4 +1,4 @@
-public class Physicist extends Human
+public class Physicist extends Human implements Comparable<Human>
 {
     private int year;
 
@@ -32,5 +32,12 @@ public class Physicist extends Human
         {
             return "Name: " + getName() + ", age: " + getAge() + ", year: F-" + year;
         }
+    }
+
+    public int compareTo(Human human)
+    {
+        if (human.getAge() > super.getAge()) return -1;
+        if (human.getAge() < super.getAge()) return 1;
+        return 0;
     }
 }

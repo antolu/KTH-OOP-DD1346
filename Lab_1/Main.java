@@ -1,5 +1,8 @@
-public class Main {
-    public static void main(String[] args) {
+import java.util.*;
+public class Main 
+{
+    public static void main(String[] args) 
+    {
         Human Pelle = new Human(25, "Pelle");;
         // System.out.println(Pelle.toString());
         System.out.println("E1-E2");
@@ -62,6 +65,17 @@ public class Main {
         for (int i = 0; i < 10; i++)
         {
             System.out.println(mix[i]);
+        }
+
+        /****************************/
+
+        System.out.println("\nE5");
+
+        Arrays.sort(mix); // Comparable since both types use the object reference Human
+
+        for (Human human : mix)
+        {
+            System.out.println(human);
         }
     }
 }

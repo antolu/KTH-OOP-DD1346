@@ -1,6 +1,7 @@
 import java.lang.Math;
 
-public class Human {
+public class Human implements Comparable<Human>
+{
 
     private int age;
     private String name;
@@ -48,5 +49,12 @@ public class Human {
     public String getName()
     {
         return name;
+    }
+
+    public int compareTo(Human human)
+    {
+        if (human.getAge() > age) return -1;
+        if (human.getAge() < age) return 1;
+        return 0;
     }
 }

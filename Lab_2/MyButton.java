@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 import javax.swing.*;   
 
-class MyButton extends JButton
+class MyButton extends JButton implements ActionListener
 {
     private boolean isPressed;
 
@@ -25,7 +25,7 @@ class MyButton extends JButton
         isPressedString = text2;
         setText(text1);
 
-        this.addActionListener(new MyButtonListener());
+        addActionListener(this);
     }
 
     public MyButton()
@@ -38,7 +38,7 @@ class MyButton extends JButton
         color2 = Color.red;
         setBackground(color1);
 
-        this.addActionListener(new MyButtonListener());
+        addActionListener(this);
     }
 
     public void toggleState()
@@ -57,11 +57,9 @@ class MyButton extends JButton
         isPressed = !isPressed;
     }
 
-    public class MyButtonListener implements ActionListener
+
+    public void actionPerformed(ActionEvent e)
     {
-        public void actionPerformed(ActionEvent e)
-        {
-            toggleState();
-        }
+        toggleState();
     }
 }

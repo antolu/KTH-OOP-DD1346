@@ -1,8 +1,10 @@
 import java.awt.Color;
+import java.awt.event.*;
 
 import javax.swing.*;   
 
-class MyButton extends JButton{
+class MyButton extends JButton
+{
     private boolean isPressed;
 
     private String notPressedString = "Push me!";
@@ -22,6 +24,8 @@ class MyButton extends JButton{
         notPressedString = text1;
         isPressedString = text2;
         setText(text1);
+
+        this.addActionListener(new MyButtonListener());
     }
 
     public MyButton()
@@ -33,6 +37,8 @@ class MyButton extends JButton{
         color1 = Color.blue;
         color2 = Color.red;
         setBackground(color1);
+
+        this.addActionListener(new MyButtonListener());
     }
 
     public void toggleState()
@@ -49,5 +55,13 @@ class MyButton extends JButton{
         }
 
         isPressed = !isPressed;
+    }
+
+    public class MyButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            toggleState();
+        }
     }
 }

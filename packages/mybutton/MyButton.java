@@ -1,9 +1,11 @@
+package mybutton;
+
 import java.awt.Color;
 import java.awt.event.*;
 
 import javax.swing.*;   
 
-class MyButton extends JButton implements ActionListener
+public class MyButton extends JButton implements ActionListener
 {
     private boolean isPressed;
 

@@ -41,7 +41,7 @@ class MyButton extends JButton implements ActionListener
         addActionListener(this);
     }
 
-    public void toggleState()
+    private void toggleState()
     {
         if (isPressed)
         {

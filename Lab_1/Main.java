@@ -69,7 +69,27 @@ public class Main
 
         /****************************/
 
-        System.out.println("\nE5");
+        System.out.println("\nE5.2");
+
+        Human a = new Human();
+        Human b = new Human();
+
+        int compareResult = a.compareTo(b);
+        if (compareResult > 0)
+        {
+            System.out.println(a.getName() + " who is " + a.getAge() + " years old, is older than " 
+                                + b.getName() + " who is " + b.getAge() + " years old.");
+        }
+        else if (compareResult < 0){
+            System.out.println(b.getName() + " who is " + b.getAge() + " years old, is older than " 
+            + a.getName() + " who is " + a.getAge() + " years old.");
+        }
+        else
+        {
+            System.out.println(a.getName() + " and " + b.getName() + " are equally old; " + a.getAge() + " years old.");
+        }
+
+        System.out.println("\nE5.4");
 
         Arrays.sort(mix); // Comparable since both types use the object reference Human
 

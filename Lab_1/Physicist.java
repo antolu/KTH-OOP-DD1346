@@ -15,6 +15,13 @@ public class Physicist extends Human implements Comparable<Human> {
         year = randYear;
     }
 
+    public Physicist(int ageIn, String nameIn, int yearIn)
+    {
+        super.age = ageIn;
+        super.name = nameIn;
+        year = yearIn;
+    }
+
     public int getYear() {
         return year;
     }
@@ -28,6 +35,15 @@ public class Physicist extends Human implements Comparable<Human> {
             return -1;
         if (human.getAge() < super.getAge())
             return 1;
+        if (human instanceof Physicist) {
+            Physicist physicist = (Physicist) human;
+
+            if (physicist.getYear() > year)
+                return -1;
+            if (physicist.getYear() < year)
+                return 1;
+            return 0;
+        }
         return 0;
     }
 }

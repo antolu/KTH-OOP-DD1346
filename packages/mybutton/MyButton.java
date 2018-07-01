@@ -30,15 +30,7 @@ public class MyButton extends JButton implements ActionListener
 
     public MyButton()
     {
-        notPressedString = "Push me!";
-        isPressedString = "Push me again!";
-        setText(notPressedString);
-
-        color1 = Color.blue;
-        color2 = Color.red;
-        setBackground(color1);
-
-        addActionListener(this);
+        this(Color.blue, Color.red, "Push me!", "Push me again!");
     }
 
     private void toggleState()

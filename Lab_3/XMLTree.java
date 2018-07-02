@@ -1,3 +1,4 @@
+import javax.management.modelmbean.XMLParseException;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.xml.parsers.*;
@@ -62,7 +63,14 @@ public class XMLTree extends JFrame implements ActionListener {
 
     private void readFile() {
         xmlparser = new XMLParser("Liv.xml");
-        xmlparser.parse();
+        try{
+            xmlparser.parse();
+        }
+        catch (XMLParseException e)
+        {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
         inTree = xmlparser.getTree();
     }
 

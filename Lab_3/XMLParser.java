@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.management.modelmbean.XMLParseException;
+
 import java.io.*;
 
 import node.*;
@@ -15,7 +18,7 @@ public class XMLParser {
         this.file = new File(filename);
     }
 
-    public void parse() {
+    public void parse() throws XMLParseException {
         try {
             scanner = new Scanner(file);
             currentLine = scanner.nextLine();
@@ -25,11 +28,14 @@ public class XMLParser {
 
             tree = readNode();
 
+            if (!tree.getTagName().equals(endTag(currentLine)) || !currentTag.equals(endTag(currentLine)))
+            {
+                throw new XMLParseException("Mismatched tags!");
+            }
+
             scanner.close();
 
-            // printTree(tree);
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -48,7 +54,7 @@ public class XMLParser {
         }
     }
 
-    private Node readNode() {
+    private Node readNode() throws XMLParseException {
         String[] content = getContent(currentLine);
         Node node = new Node(content[0], content[1], content[2]);
 
@@ -62,6 +68,10 @@ public class XMLParser {
             if (currentTag.equals(endTag(currentLine))) {
                 return node;
             }
+            else if (!"".equals(endTag(currentLine)) && !currentTag.equals(endTag(currentLine)))
+            {
+                throw new XMLParseException("Mismatched tags!");
+            }
 
             if (!currentTag.equals(getTag(currentLine))) {
                 Node newNode = readNode();
@@ -70,55 +80,62 @@ public class XMLParser {
 
                 currentTag = node.getTagName();
             }
+            else {
+                throw new XMLParseException("Mismatched tags!");
+            }
         }
     }
 
-    private String[] getContent(String string) {
+    private String[] getContent(String string) throws XMLParseException {
         string = string.trim();
 
-        if (string.startsWith("<")) {
+        if (string.matches("<.+\\s.+=\"(.|\\s)+\">.+")) {
             int tagEnd = string.indexOf(">");
-            String tag = string.substring(0, tagEnd);
+
+            String tagName = string.substring(1, string.indexOf(" "));
+            String attribute = "";
+            if (string.matches("<.+?>.+")) {
+                attribute = string.substring(string.indexOf(" ") + 7, tagEnd-1);
+            }
             String information = string.substring(tagEnd + 1);
-
-            // Extract information from tag
-            String[] splitLine = tag.split("\\p{Blank}");
-
-            String tagName = splitLine[0].substring(1);
-
-            String attribute = splitLine[1].substring(6, splitLine[1].length() - 1);
 
             currentTag = tagName;
 
             return new String[] { tagName, attribute, information };
+        } else {
+            throw new XMLParseException("Row incomplete! Missing braces, quotation signs or information: " + string);
         }
-        return new String[] { string };
     }
 
-    private String getTag(String string) {
+    private String getTag(String string) throws XMLParseException {
         if (string.startsWith("<") && !string.startsWith("</")) {
-            String[] splitLine = string.split("\\p{Blank}");
+            String[] splitLine = string.split("\\s");
             return splitLine[0].substring(1);
         }
-        return currentTag;
+        else{
+            throw new XMLParseException("Beginning brace missing: " + string);
+        }
     }
 
-    private String endTag(String string) {
+    private String endTag(String string) throws XMLParseException {
         string = string.trim();
-        if (string.matches("</([A-Za-z0-9]+?)>")) {
-            String newString = string.substring(2);
-            String returnString = newString.substring(0, newString.indexOf(">"));
-            return returnString;
+        if (string.startsWith("</")) {
+            if (string.matches("</.+>")) {
+                return string.substring(2, string.indexOf(">"));
+            } else {
+                throw new XMLParseException("Missing end brace: " + string);
+            }
         }
         return "";
+    }
+
+    public Node getTree() {
+        return tree;
     }
 
     // public static void main(String[] args) {
     // XMLParser parser = new XMLParser("Liv.xml");
     // parser.parse();
+    // printTree(tree);
     // }
-
-    public Node getTree() {
-        return tree;
-    }
 }

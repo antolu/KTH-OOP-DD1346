@@ -1,24 +1,40 @@
-import javax.management.modelmbean.XMLParseException;
+
+/**
+ * XMLTree
+ */
+
 import javax.swing.*;
 import javax.swing.tree.*;
 
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.management.modelmbean.XMLParseException;
 
 public class XMLTree extends JFrame implements ActionListener {
 
-    public XMLTree() {
-        Container c = getContentPane();
-        // *** Build the tree and a mouse listener to handle clicks
+    private static final String closeString = " Close ";
+    private static final String showString = " Show Details ";
 
+    private JCheckBox box;
+    private JTree tree;
+    private MyNode root;
+    private JPanel controls;
+    private XMLParser xmlparser;
+
+    /**
+     * Creates a graphical visualization of the XML file "Liv.xml".
+     */
+    public XMLTree() {
+        Container container = getContentPane();
+
+        /* Read and parse the XML file */
         readFile();
 
-        // root = new DefaultMutableTreeNode(inTree);
-        root = inTree;
-        treeModel = new DefaultTreeModel(root);
+        DefaultTreeModel treeModel = new DefaultTreeModel(root);
         tree = new JTree(treeModel);
 
+        /* Add ability to show details for selected node in the GUI */
         MouseListener ml = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (box.isSelected())
@@ -26,83 +42,89 @@ public class XMLTree extends JFrame implements ActionListener {
             }
         };
         tree.addMouseListener(ml);
-        // *** build the tree by adding the nodes
-        // buildTree();
-        // *** panel the JFrame to hold controls and the tree
-        controls = new JPanel();
-        box = new JCheckBox(showString);
-        init(); // ** set colors, fonts, etc. and add buttons
-        c.add(controls, BorderLayout.NORTH);
-        c.add(tree, BorderLayout.CENTER);
-        setVisible(true); // ** display the framed window
+
+        /* Create the GUI and show it */
+        createGUI();
+        container.add(controls, BorderLayout.NORTH);
+        container.add(tree, BorderLayout.CENTER);
+        setVisible(true);
     }
 
+    /**
+     * ActionPerformed for listening to the "close" button.
+     */
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         if (cmd.equals(closeString))
             dispose();
     }
 
-    private void init() {
-        tree.setFont(new Font("Dialog", Font.BOLD, 12));
-        controls.add(box);
-        addButton(closeString);
-        controls.setBackground(Color.lightGray);
-        controls.setLayout(new FlowLayout());
-        setSize(400, 400);
-    }
-
-    private void addButton(String n) {
-        JButton b = new JButton(n);
-        b.setFont(new Font("Dialog", Font.BOLD, 12));
-        b.addActionListener(this);
-        controls.add(b);
-    }
-
+    /**
+     * Creates an XMLParser object and parses the XML file.
+     */
     private void readFile() {
         xmlparser = new XMLParser("Liv.xml");
-        try{
-            inTree = xmlparser.parse();
-        }
-        catch (XMLParseException e)
-        {
+        try {
+            root = xmlparser.parse();
+        } catch (XMLParseException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }
     }
 
-    private void showDetails(TreePath p) {
-        if (p == null)
+    /**
+     * Creates the GUI for the XML tree.
+     */
+    private void createGUI() {
+        controls = new JPanel();
+        box = new JCheckBox(showString);
+        tree.setFont(new Font("Dialog", Font.BOLD, 12));
+
+        controls.add(box);
+        addButton(closeString);
+        controls.setBackground(Color.lightGray);
+        controls.setLayout(new FlowLayout());
+
+        setSize(400, 400);
+    }
+
+    /**
+     * Adds a button to the control bar with label `buttonLabel`.
+     */
+    private void addButton(String buttonLabel) {
+        JButton button = new JButton(buttonLabel);
+        button.setFont(new Font("Dialog", Font.BOLD, 12));
+        button.addActionListener(this);
+        controls.add(button);
+    }
+
+    /**
+     * Shows details of the node located at `treePath`.
+     */
+    private void showDetails(TreePath treePath) {
+        if (treePath == null)
             return;
-        MyNode node = (MyNode) p.getLastPathComponent();
+        MyNode node = (MyNode) treePath.getLastPathComponent();
 
         String nodeInfo = node.getContent();
         String parentInfo = "";
-        if (!node.isRoot()){
+        if (!node.isRoot()) {
             parentInfo += "men allt som är " + node.getAttribute();
+
+            /* Iterate until there the root of the tree */
             while (!node.isRoot()) {
                 node = (MyNode) node.getParent();
-                System.out.println(parentInfo);
                 parentInfo += " är ";
                 parentInfo += node.getAttribute();
             }
             parentInfo += ".";
         }
 
+        /* Display node information in a JOptionPane */
         JOptionPane.showMessageDialog(this, nodeInfo + "\n" + parentInfo);
     }
 
     public static void main(String[] args) {
         new XMLTree();
     }
-
-    private JCheckBox box;
-    private JTree tree;
-    private DefaultMutableTreeNode root;
-    private DefaultTreeModel treeModel;
-    private JPanel controls;
-    private static final String closeString = " Close ";
-    private static final String showString = " Show Details ";
-    private XMLParser xmlparser;
-    private MyNode inTree;
 }

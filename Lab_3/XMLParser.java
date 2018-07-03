@@ -8,7 +8,7 @@ import node.*;
 
 public class XMLParser {
 
-    private Node tree;
+    private MyNode tree;
     private File file;
     private Scanner scanner;
     private String currentLine;
@@ -18,7 +18,7 @@ public class XMLParser {
         this.file = new File(filename);
     }
 
-    public void parse() throws XMLParseException {
+    public MyNode parse() throws XMLParseException {
         try {
             scanner = new Scanner(file);
             currentLine = scanner.nextLine();
@@ -39,24 +39,24 @@ public class XMLParser {
             e.printStackTrace();
         }
 
-        return;
+        return tree;
     }
 
-    private void printTree(Node node) {
-        System.out.println(node + " has " + node.getChildrenCount() + " children.");
-        if (!node.hasChildren) {
+    private void printTree(MyNode node) {
+        System.out.println(node + " has " + node.getChildCount() + " children.");
+        if (node.isLeaf()) {
             return;
         }
 
-        for (int i = 0; i < node.getChildrenCount(); i++) {
-            Node child = node.getChild(i);
+        for (int i = 0; i < node.getChildCount(); i++) {
+            MyNode child = (MyNode) node.getChildAt(i);
             printTree(child);
         }
     }
 
-    private Node readNode() throws XMLParseException {
+    private MyNode readNode() throws XMLParseException {
         String[] content = getContent(currentLine);
-        Node node = new Node(content[0], content[1], content[2]);
+        MyNode node = new MyNode(content[0], content[1], content[2]);
 
         while (true) {
             if (!scanner.hasNext()) {
@@ -74,9 +74,9 @@ public class XMLParser {
             }
 
             if (!currentTag.equals(getTag(currentLine))) {
-                Node newNode = readNode();
-                node.addChildren(newNode);
-                newNode.setParent(node);
+                MyNode newNode = readNode();
+                node.add(newNode);
+                // newNode.setParent(node);
 
                 currentTag = node.getTagName();
             }
@@ -127,10 +127,6 @@ public class XMLParser {
             }
         }
         return "";
-    }
-
-    public Node getTree() {
-        return tree;
     }
 
     // public static void main(String[] args) {

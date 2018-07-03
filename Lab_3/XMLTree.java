@@ -1,13 +1,10 @@
 import javax.management.modelmbean.XMLParseException;
 import javax.swing.*;
 import javax.swing.tree.*;
-import javax.xml.parsers.*;
 
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import node.*;
 
 public class XMLTree extends JFrame implements ActionListener {
 
@@ -17,7 +14,8 @@ public class XMLTree extends JFrame implements ActionListener {
 
         readFile();
 
-        root = new DefaultMutableTreeNode(inTree);
+        // root = new DefaultMutableTreeNode(inTree);
+        root = inTree;
         treeModel = new DefaultTreeModel(root);
         tree = new JTree(treeModel);
 
@@ -29,7 +27,7 @@ public class XMLTree extends JFrame implements ActionListener {
         };
         tree.addMouseListener(ml);
         // *** build the tree by adding the nodes
-        buildTree();
+        // buildTree();
         // *** panel the JFrame to hold controls and the tree
         controls = new JPanel();
         box = new JCheckBox(showString);
@@ -64,50 +62,34 @@ public class XMLTree extends JFrame implements ActionListener {
     private void readFile() {
         xmlparser = new XMLParser("Liv.xml");
         try{
-            xmlparser.parse();
+            inTree = xmlparser.parse();
         }
         catch (XMLParseException e)
         {
             System.out.println(e.getMessage());
             System.exit(1);
         }
-        inTree = xmlparser.getTree();
-    }
-
-    private void buildTree() {
-        for (int i = 0; i < inTree.getChildrenCount(); i++)
-            buildTree(inTree.getChild(i), root);
-    }
-
-    private void buildTree(Node f, DefaultMutableTreeNode parent) {
-        DefaultMutableTreeNode child = new DefaultMutableTreeNode(f);
-        parent.add(child);
-        if (!f.hasChildren) {
-            return;
-        }
-
-        for (int i = 0; i < f.getChildrenCount(); i++)
-            buildTree(f.getChild(i), child);
     }
 
     private void showDetails(TreePath p) {
         if (p == null)
             return;
-        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) p.getLastPathComponent();
-        Node node = (Node) treeNode.getUserObject();
+        MyNode node = (MyNode) p.getLastPathComponent();
 
+        String nodeInfo = node.getContent();
         String parentInfo = "";
-        if (node.hasParent){
-            parentInfo += "men allt som";
-            while (node.hasParent) {
-                node = node.getParent();
+        if (!node.isRoot()){
+            parentInfo += "men allt som är " + node.getAttribute();
+            while (!node.isRoot()) {
+                node = (MyNode) node.getParent();
+                System.out.println(parentInfo);
                 parentInfo += " är ";
                 parentInfo += node.getAttribute();
             }
             parentInfo += ".";
         }
 
-        JOptionPane.showMessageDialog(this, node.getContent() + "\n" + parentInfo);
+        JOptionPane.showMessageDialog(this, nodeInfo + "\n" + parentInfo);
     }
 
     public static void main(String[] args) {
@@ -119,9 +101,8 @@ public class XMLTree extends JFrame implements ActionListener {
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
     private JPanel controls;
-    private static String katalog = ".";
     private static final String closeString = " Close ";
     private static final String showString = " Show Details ";
     private XMLParser xmlparser;
-    private Node inTree;
+    private MyNode inTree;
 }

@@ -87,7 +87,7 @@ public class Controller extends JPanel
 
         time += timer.getDelay();
 
-        if (writeIndex < 1000) {
+        if (writeIndex < 100) {
             StringBuilder outputLine = new StringBuilder(Integer.toString(time));
             // String outputLine = Integer.toString(time);
             for (Model.Particle particle : model.particles) {

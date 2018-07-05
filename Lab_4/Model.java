@@ -2,7 +2,7 @@ import java.lang.Math;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Model {
-    private double L = 1;
+    private int L = 10;
     public Particle[] particles;
 
     public Model(int numberOfParticles) {
@@ -14,14 +14,16 @@ public class Model {
     }
 
     public void updatePosition() {
-
+        for (Particle particle : particles) {
+            particle.updatePosition();
+        }
     }
 
-    public double getStep() {
+    public int getStep() {
         return L;
     }
 
-    public void setStep(double L) {
+    public void setStep(int L) {
         this.L = L;
     }
 

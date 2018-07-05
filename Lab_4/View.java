@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
@@ -18,16 +19,17 @@ public class View extends JPanel {
 
         this.setPreferredSize(new Dimension( 2 * (int) DIM, 2 * (int) DIM));
         this.setForeground(Color.lightGray);
-
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     public void paint(Graphics g) {
+        super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.red);
 
         Model.Particle[] particles = model.particles;
         for (Model.Particle particle : particles) {
-            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 5, 5));
+            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
         }
     }
 

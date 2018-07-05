@@ -30,6 +30,7 @@ public class Model {
     public class Particle {
         public double x;
         public double y;
+        private Boolean reachedBorder = false;
 
         public Particle() {
             this(200 * ThreadLocalRandom.current().nextDouble(-1, 1), 
@@ -42,9 +43,19 @@ public class Model {
         }
 
         private void updatePosition() {
+            if (reachedBorder) 
+                return;
+            
             double theta = 2 * Math.PI * Math.random();
             x = x + L * Math.cos(theta);
             y = y + L * Math.sin(theta);
+
+            if (Math.abs(x) >= 250 || Math.abs(y) >= 250)
+                reachedBorder = true;
+        }
+
+        public Boolean hasReachedBorder() {
+            return reachedBorder;
         }
     }
 }

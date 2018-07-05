@@ -22,13 +22,20 @@ public class View extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.red);
 
         Model.Particle[] particles = model.particles;
         for (Model.Particle particle : particles) {
+            if (particle.hasReachedBorder())
+            {
+                g2.setColor(Color.red);
+            }
+            else
+            {
+                g2.setColor(Color.black);
+            }
             g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
         }
     }

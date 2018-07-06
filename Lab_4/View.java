@@ -12,10 +12,11 @@ import java.awt.geom.Ellipse2D;
 public class View extends JPanel {
 
     private Model model;
-    private final double DIM = 250;
+    private final double DIM;
 
     public View(Model model) {
         this.model = model;
+        DIM = model.DIM;
 
         this.setPreferredSize(new Dimension( 2 * (int) DIM, 2 * (int) DIM));
         this.setForeground(Color.lightGray);
@@ -26,8 +27,7 @@ public class View extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        Model.Particle[] particles = model.particles;
-        for (Model.Particle particle : particles) {
+        for (Model.Particle particle : model.particles) {
             if (particle.hasReachedBorder())
             {
                 g2.setColor(Color.red);
@@ -38,6 +38,14 @@ public class View extends JPanel {
             }
             g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
         }
+        // g2.setColor(Color.red);
+        // for (Model.Particle particle : model.stuckParticles) {
+        //     g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
+        // }
+        // g2.setColor(Color.black);
+        // for (Model.Particle particle : model.particles) {
+        //     g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
+        // }
     }
 
 }

@@ -14,7 +14,7 @@ public class Controller extends JPanel
     private JSlider LSlider;
     private JSlider timeSlider;
     private Timer   timer;
-    private int     dT = 1000;
+    private int     dT = 250;
     private int     time = 0;
     private PrintWriter outputStream = null;
     private int     writeIndex = 0;
@@ -24,7 +24,7 @@ public class Controller extends JPanel
         this.view = view;
 
         LSlider = new JSlider(0, 50, model.getStep());
-        timeSlider = new JSlider(0, 2000, dT);
+        timeSlider = new JSlider(0, 1000, dT);
 
         LSlider.addChangeListener(this);
         LSlider.setMajorTickSpacing(25);
@@ -32,8 +32,8 @@ public class Controller extends JPanel
         LSlider.setPaintTicks(true);
         LSlider.setPaintLabels(true);
 
-        timeSlider.setMajorTickSpacing(1000);
-        timeSlider.setMinorTickSpacing(200);
+        timeSlider.setMajorTickSpacing(500);
+        timeSlider.setMinorTickSpacing(100);
         timeSlider.setPaintTicks(true);
         timeSlider.setPaintLabels(true);
         timeSlider.addChangeListener(this);
@@ -52,17 +52,23 @@ public class Controller extends JPanel
             System.exit(1);
         }
 
+        logLine();
+        timer.start();
+    }
+
+    private void logLine() {
         /* Write lines to logging file */
         StringBuilder outputLine = new StringBuilder(Double.toString(time));
+        // String outputLine = Integer.toString(time);
         for (Model.Particle particle : model.particles) {
+            // outputLine = outputLine + ", " + particle.x + ", " + particle.y;
             outputLine.append(", ");
             outputLine.append(particle.x);
             outputLine.append(", ");
             outputLine.append(particle.y);
         }
         outputStream.println(outputLine);
-
-        timer.start();
+        writeIndex++;
     }
 
     public void stateChanged(ChangeEvent e) {
@@ -88,18 +94,7 @@ public class Controller extends JPanel
         time += timer.getDelay();
 
         if (writeIndex < 100) {
-            StringBuilder outputLine = new StringBuilder(Integer.toString(time));
-            // String outputLine = Integer.toString(time);
-            for (Model.Particle particle : model.particles) {
-                // outputLine = outputLine + ", " + particle.x + ", " + particle.y;
-                outputLine.append(", ");
-                outputLine.append(particle.x);
-                outputLine.append(", ");
-                outputLine.append(particle.y);
-            }
-            outputStream.println(outputLine);
-
-            writeIndex++;
+            logLine();
         }
     }
 }

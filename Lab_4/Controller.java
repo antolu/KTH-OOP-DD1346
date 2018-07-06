@@ -13,6 +13,8 @@ public class Controller extends JPanel
     private View    view;
     private JSlider LSlider;
     private JSlider timeSlider;
+    private LoggerButton loggerButton;
+    private Boolean isLogging = false;
     private Timer   timer;
     private int     dT = 250;
     private int     time = 0;
@@ -38,11 +40,15 @@ public class Controller extends JPanel
         timeSlider.setPaintLabels(true);
         timeSlider.addChangeListener(this);
 
+        loggerButton = new LoggerButton();
+        loggerButton.addActionListener(this);
+
         timer = new Timer(dT, this);
         timer.setInitialDelay(1);
 
         this.add(LSlider, BorderLayout.WEST);
-        this.add(timeSlider, BorderLayout.EAST);
+        this.add(timeSlider, BorderLayout.WEST);
+        this.add(loggerButton, BorderLayout.CENTER);
         this.setLayout(new FlowLayout());
 
         try {
@@ -57,6 +63,8 @@ public class Controller extends JPanel
     }
 
     private void logLine() {
+        if (!isLogging) return;
+        if (writeIndex > 100) return; 
         /* Write lines to logging file */
         StringBuilder outputLine = new StringBuilder(Double.toString(time));
         // String outputLine = Integer.toString(time);
@@ -88,13 +96,17 @@ public class Controller extends JPanel
     }
 
     public void actionPerformed(ActionEvent e) {
-        model.updatePosition();
-        view.repaint();
+        if (e.getSource() == timer) {
+            model.updatePosition();
+            view.repaint();
 
-        time += timer.getDelay();
+            time += timer.getDelay();
 
-        if (writeIndex < 100) {
             logLine();
+        }
+        else {
+            loggerButton.toggleState();
+            isLogging = !isLogging;
         }
     }
 }

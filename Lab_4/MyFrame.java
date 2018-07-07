@@ -20,8 +20,8 @@ public class MyFrame extends JFrame {
         this.setSize(520, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        container.add(view, BorderLayout.NORTH);
-        container.add(controller, BorderLayout.CENTER);
+        container.add(view, BorderLayout.CENTER);
+        container.add(controller, BorderLayout.SOUTH);
 
         this.pack();
         this.setVisible(true);

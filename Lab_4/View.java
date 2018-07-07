@@ -27,25 +27,14 @@ public class View extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        for (Model.Particle particle : model.particles) {
-            if (particle.hasReachedBorder())
-            {
-                g2.setColor(Color.red);
-            }
-            else
-            {
-                g2.setColor(Color.black);
-            }
-            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
+        g2.setColor(Color.red);
+        for (Model.Particle particle : model.stuckParticles) {
+            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 1, 1));
         }
-        // g2.setColor(Color.red);
-        // for (Model.Particle particle : model.stuckParticles) {
-        //     g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
-        // }
-        // g2.setColor(Color.black);
-        // for (Model.Particle particle : model.particles) {
-        //     g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 2, 2));
-        // }
+        g2.setColor(Color.black);
+        for (Model.Particle particle : model.particles) {
+            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 1, 1));
+        }
     }
 
 }

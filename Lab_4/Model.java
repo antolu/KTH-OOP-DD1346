@@ -56,9 +56,9 @@ public class Model {
 
         int xCell = (int) Math.ceil(particle.x) / gridElementSize;
         int yCell = (int) Math.ceil(particle.y) / gridElementSize;
-        ArrayList<Grid.Cell> cells = grid.getCellArea(xCell, yCell);
-        for (Grid.Cell cell : cells) {
-            for (Particle secondParticle : cell.getCellContent()) {
+        ArrayList<Cell> cells = grid.getCellArea(xCell, yCell);
+        for (Cell cell : cells) {
+            for (Particle secondParticle : cell) {
                 if (getDistance(particle, secondParticle) <= 2) {
                     grid.addParticle(particle);
                     stuckParticles.add(particle);

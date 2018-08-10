@@ -23,10 +23,8 @@ public class Main
 
         panel.add(button);
         frame.add(panel);
-        frame.pack(); // Size frame to match contents
+        frame.pack(); // Size frame to match contents according to layout manager
 
-        button.setVisible(true);
-        panel.setVisible(true);
         frame.setVisible(true);
     }
 }

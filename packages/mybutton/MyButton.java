@@ -9,8 +9,8 @@ public class MyButton extends JButton implements ActionListener
 {
     private boolean isPressed = false;
 
-    private String notPressedString = "Push me!";
-    private String isPressedString = "You pushed me!";
+    private String notPressedString;
+    private String isPressedString;
 
     private Color color1;
     private Color color2;

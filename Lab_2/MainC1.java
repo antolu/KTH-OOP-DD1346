@@ -35,6 +35,6 @@ public class MainC1 {
             System.err.println("Incorrect number of arguments provided. Should be 1 argument.");
             return;
         }
-        MainC1 grid = new MainC1(numberOfButtons);
+        new MainC1(numberOfButtons);
     }
 }

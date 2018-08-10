@@ -5,7 +5,6 @@ public class Human implements Comparable<Human>
 
     protected int age;
     protected String name;
-
     private String names[] = {
         "Anton", "Elisabet", "Felicitas", "Gisele", "Chanell", "Coralie", 
         "Raymundo", "Deshawn", "Maryellen", "Alden", "Tena", "Hosea", "Nila", 
@@ -22,6 +21,7 @@ public class Human implements Comparable<Human>
         "Ivana", "Shizue", "Dawna", "Freddie", "Arthur", "Joel", "Isabell", "Antoine", 
         "Annetta", "Edna"
     };
+    
     public Human() // Random
     {
         double randNo = 100*Math.random();

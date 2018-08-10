@@ -40,7 +40,8 @@ public class XMLParser {
 
             tree = readNode();
 
-            if (!tree.getTagName().equals(getEndTag(currentLine)) || !currentTag.equals(getEndTag(currentLine))) {
+            if (!tree.getTagName().equals(getEndTag(currentLine)) 
+                    || !currentTag.equals(getEndTag(currentLine))) {
                 throw new XMLParseException("Mismatched tags!");
             }
 
@@ -88,7 +89,8 @@ public class XMLParser {
             /* If a closing tag is found, return the node */
             if (currentTag.equals(getEndTag(currentLine))) {
                 return node;
-            } else if (!"".equals(getEndTag(currentLine)) && !currentTag.equals(getEndTag(currentLine))) {
+            } else if (!"".equals(getEndTag(currentLine)) 
+                && !currentTag.equals(getEndTag(currentLine))) {
                 throw new XMLParseException("Mismatched tags!");
             }
 
@@ -128,7 +130,8 @@ public class XMLParser {
 
             return new String[] { tagName, attribute, information };
         } else {
-            throw new XMLParseException("Row incomplete! Missing braces, quotation signs or information: " + string);
+            throw new XMLParseException("Row incomplete! Missing braces,"
+                    + " quotation signs or information: " + string);
         }
     }
 

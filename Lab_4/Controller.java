@@ -9,17 +9,17 @@ import javax.swing.event.*;
 
 public class Controller extends JPanel 
                         implements ChangeListener, ActionListener {
-    private Model   model;
-    private View    view;
-    private JSlider LSlider;
-    private JSlider timeSlider;
-    private LoggerButton loggerButton;
-    private Boolean isLogging = false;
-    private Timer   timer;
-    private int     dT = 250;
-    private int     time = 0;
-    private PrintWriter outputStream = null;
-    private int     writeIndex = 0;
+    private Model           model;
+    private View            view;
+    private JSlider         LSlider;
+    private JSlider         timeSlider;
+    private LoggerButton    loggerButton;
+    private Boolean         isLogging       = false;
+    private Timer           timer;
+    private int             dT              = 250;
+    private int             time            = 0;
+    private PrintWriter     outputStream    = null;
+    private int             writeIndex      = 0;
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -67,9 +67,8 @@ public class Controller extends JPanel
         if (writeIndex > 100) return; 
         /* Write lines to logging file */
         StringBuilder outputLine = new StringBuilder(Double.toString(time));
-        // String outputLine = Integer.toString(time);
+
         for (Model.Particle particle : model.particles) {
-            // outputLine = outputLine + ", " + particle.x + ", " + particle.y;
             outputLine.append(", ");
             outputLine.append(particle.x);
             outputLine.append(", ");

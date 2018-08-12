@@ -1,5 +1,6 @@
 import java.io.*;
 import java.lang.StringBuilder;
+import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,9 +47,9 @@ public class Controller extends JPanel
         timer = new Timer(dT, this);
         timer.setInitialDelay(1);
 
-        this.add(LSlider, BorderLayout.WEST);
-        this.add(timeSlider, BorderLayout.WEST);
-        this.add(loggerButton, BorderLayout.CENTER);
+        this.add(LSlider);
+        this.add(timeSlider);
+        this.add(loggerButton);
         this.setLayout(new FlowLayout());
 
         try {
@@ -65,14 +66,18 @@ public class Controller extends JPanel
     private void logLine() {
         if (!isLogging) return;
         if (writeIndex > 100) return; 
+        
         /* Write lines to logging file */
         StringBuilder outputLine = new StringBuilder(Double.toString(time));
 
-        for (Model.Particle particle : model.particles) {
+        ArrayList<double[]> particlePositions = model.getPositions();
+        ArrayList<double[]> stuckPositions = model.getStuckPositions();
+        particlePositions.addAll(stuckPositions);
+        for (double[] particlePosition : particlePositions) {
             outputLine.append(", ");
-            outputLine.append(particle.x);
+            outputLine.append(particlePosition[0]);
             outputLine.append(", ");
-            outputLine.append(particle.y);
+            outputLine.append(particlePosition[1]);
         }
         outputStream.println(outputLine);
         writeIndex++;

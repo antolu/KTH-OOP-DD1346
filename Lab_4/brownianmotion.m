@@ -89,7 +89,7 @@ ylim([-250 250]);
 
 for row=1:simulation_size(1)
     particles = output(row, 2:2:end)';
-    plot(particles, 'r.', 'MarkerSize', 5)
+    plot(particles(2:2:end-1), particles(3:2:end), 'r.', 'MarkerSize', 5)
     maxx(row) = max(particles(2:2:end-1));
     maxy(row) = max(particles(3:2:end));
     minx(row) = min(particles(2:2:end-1));

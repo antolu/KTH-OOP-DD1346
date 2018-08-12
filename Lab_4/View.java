@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 public class View extends JPanel {
 
@@ -28,12 +29,16 @@ public class View extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setColor(Color.red);
-        for (Model.Particle particle : model.stuckParticles) {
-            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 1, 1));
+        ArrayList<double[]> stuckPositions = model.getStuckPositions();
+        for (double[] stuckPosition : stuckPositions) {
+            g2.fill(new Ellipse2D.Double(DIM + stuckPosition[0], 
+                    DIM + stuckPosition[1], 1, 1));
         }
         g2.setColor(Color.black);
-        for (Model.Particle particle : model.particles) {
-            g2.fill(new Ellipse2D.Double(DIM + particle.x, DIM + particle.y, 1, 1));
+        ArrayList<double[]> particlePositions = model.getPositions();
+        for (double[] particlePosition : particlePositions) {
+            g2.fill(new Ellipse2D.Double(DIM + particlePosition[0], 
+                    DIM + particlePosition[1], 1, 1));
         }
     }
 

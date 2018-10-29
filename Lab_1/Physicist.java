@@ -17,8 +17,7 @@ public class Physicist extends Human implements Comparable<Human> {
 
     public Physicist(int ageIn, String nameIn, int yearIn)
     {
-        super.age = ageIn;
-        super.name = nameIn;
+        super(ageIn, nameIn);
         year = yearIn;
     }
 

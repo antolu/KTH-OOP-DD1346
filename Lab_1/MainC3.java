@@ -7,10 +7,10 @@ public class MainC3 {
 
         if (args.length > 0) {
             while (index < args.length) {
-                if (args[index++].equals("-H")) {
+                if (args[index].equals("-H")) {
                     try {
-                        String name = args[index++];
-                        int age = Integer.parseInt(args[index++]);
+                        String name = args[++index];
+                        int age = Integer.parseInt(args[++index]);
 
                         people.add(new Human(age, name));
                     } catch (NumberFormatException e) {
@@ -21,21 +21,22 @@ public class MainC3 {
                         System.exit(1);
                     }
                 }
-                if (args[index++].equals("-F")) {
+                if (args[index].equals("-F")) {
                     try {
-                        String name = args[index++];
-                        int age = Integer.parseInt(args[index++]);
-                        int year = Integer.parseInt(args[index++]);
+                        String name = args[++index];
+                        int age = Integer.parseInt(args[++index]);
+                        int year = Integer.parseInt(args[++index]);
 
                         people.add(new Physicist(age, name, year));
                     } catch (NumberFormatException e) {
-                        System.err.println("Argument" + args[index++] + " must be an integer.");
+                        System.err.println("Argument" + args[index] + " must be an integer.");
                         System.exit(1);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.err.println("Argument incorrectly formatted. Check argument " + index);
                         System.exit(1);
                     }
                 }
+                index++;
             }
 
         }

@@ -7,7 +7,7 @@ public class Main
 
         System.out.println("E1-E2");
         System.out.println(Pelle);
-        System.out.println("Name: " + Pelle.getName() + ", age: " + Pelle.getAge())
+        System.out.println("Name: " + Pelle.getName() + ", age: " + Pelle.getAge());
 
         /*******************************/
 

@@ -4,9 +4,9 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DirTree extends JFrame implements ActionListener {
+public class LifeTree extends JFrame implements ActionListener {
 
-  public DirTree() {
+  public LifeTree() {
     Container c = getContentPane();
     // *** Build the tree and a mouse listener to handle clicks
     root = new DefaultMutableTreeNode("Life");

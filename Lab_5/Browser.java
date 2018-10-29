@@ -1,3 +1,4 @@
+
 /** 
  * Browser
 */
@@ -15,18 +16,19 @@ import javax.swing.text.*;
 import java.awt.event.*;
 import java.io.IOException;
 
+import java.net.HttpURLConnection;
+
 import javax.*;
 
 /**
- * The main class for the browser. Creates and displays the GUI, handling
- * button input.
+ * The main class for the browser. Creates and displays the GUI, handling button
+ * input.
  * 
  * Sample page: http://www.columbia.edu/~fdc/sample.html
  * 
  * @author Anton Lu (antolu@kth.se)
  */
-public class Browser extends JFrame 
-                     implements ActionListener, HyperlinkListener {
+public class Browser extends JFrame implements ActionListener, HyperlinkListener {
     private JScrollPane browserScrollWindow;
     private JPanel toolbar;
     private BrowserWindow browserWindow;
@@ -39,9 +41,9 @@ public class Browser extends JFrame
 
     private HistoryController historyController;
 
-    /** 
+    /**
      * Generic constructor.
-    */
+     */
     public Browser() {
         createGUI();
     }
@@ -55,9 +57,8 @@ public class Browser extends JFrame
         browserScrollWindow = new JScrollPane(browserWindow);
 
         JPanel container = (JPanel) this.getContentPane();
-        
-        browserScrollWindow.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        browserScrollWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         this.setSize(500, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,8 +68,7 @@ public class Browser extends JFrame
         container.add(toolbar, BorderLayout.NORTH);
         container.add(browserScrollWindow, BorderLayout.CENTER);
 
-        historyController = new HistoryController(this, browserWindow, 
-                backButton, forwardButton);
+        historyController = new HistoryController(this, browserWindow, backButton, forwardButton);
 
         this.pack();
         this.setVisible(true);
@@ -79,8 +79,8 @@ public class Browser extends JFrame
      */
     private void createToolbar() {
         toolbar = new JPanel();
-        
-        /**Create and format buttons */
+
+        /** Create and format buttons */
         goButton = new BrowserButton("Go");
         backButton = new BrowserButton("<-");
         forwardButton = new BrowserButton("->");
@@ -118,6 +118,22 @@ public class Browser extends JFrame
             return;
         }
 
+        /** Check if URL exists */
+        try {
+            HttpURLConnection huc = (HttpURLConnection) currentURL.openConnection();
+            huc.setRequestMethod("GET"); // OR huc.setRequestMethod ("HEAD");
+            huc.connect();
+            int code = huc.getResponseCode();
+            if (code > 300) {
+                JOptionPane.showMessageDialog(this, "Loading page failed: \n" + "Error code " + code + ".");
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Loading page failed: \n" + "Connection could not be established.");
+            return;
+        }
+
         /** Display the new URL, popup error if it fails */
         try {
             browserWindow.showPage(currentURL);
@@ -137,7 +153,7 @@ public class Browser extends JFrame
     public void actionPerformed(ActionEvent e) {
         /** Show the page from the adress field URL */
         if (e.getSource() == goButton) {
-            setPage(browserField.getText()); 
+            setPage(browserField.getText());
         }
         /** Go back one page, if possible */
         else if (e.getSource() == backButton) {
@@ -162,7 +178,7 @@ public class Browser extends JFrame
      * Sets the page to the new URL when a hyperlink is clicked.
      */
     public void hyperlinkUpdate(HyperlinkEvent e) {
-        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             setPage(e.getURL().toString());
         }
     }

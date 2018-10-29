@@ -3,9 +3,9 @@ import java.lang.Math;
 public class Human implements Comparable<Human>
 {
 
-    protected int age;
-    protected String name;
-    private String names[] = {
+    private int age;
+    private String name;
+    private static final String names[] = {
         "Anton", "Elisabet", "Felicitas", "Gisele", "Chanell", "Coralie", 
         "Raymundo", "Deshawn", "Maryellen", "Alden", "Tena", "Hosea", "Nila", 
         "King", "Adolph", "Phillis", "Treasa", "Jan", "Libbie", "Kristina", "Silva", 

@@ -5,7 +5,8 @@ public class AppletButton extends JApplet {
     public void init() {
         MyButton button = new MyButton();
 
-        getContentPane().add(button);
+        add(button);
+        pack();
         setVisible(true);
     }
 }

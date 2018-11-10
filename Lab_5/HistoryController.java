@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JDialog;
 import javax.swing.event.*;
 import java.awt.event.*;
+import java.util.Stack;
 
 /**
  * HistoryController
@@ -26,8 +27,10 @@ import java.awt.event.*;
  * @author Anton Lu (antolu@kth.se)
  */
 public class HistoryController {
-    private int pageIndex = 0;
+    // private int pageIndex = 0;
     private ArrayList<URL> currentHistory;
+    private Stack<URL> backStack;
+    private Stack<URL> forwardStack;
     private ArrayList<URL> allHistory;
     private BrowserWindow browserWindow;
     private Browser browser;
@@ -47,15 +50,16 @@ public class HistoryController {
 
         currentHistory = new ArrayList<URL>();
         allHistory = new ArrayList<URL>();
+        backStack = new Stack<>();
+        forwardStack = new Stack<>();
     }
 
     /**
      * Adds a history entry to tracking.
      */
     public void addHistoryEntry(URL URL) {
-        currentHistory.add(URL);
+        backStack.push(URL);
         allHistory.add(URL);
-        pageIndex += 1;
     }
 
     /**
@@ -64,9 +68,7 @@ public class HistoryController {
      * and then clicking a new page, changing navigational branch.
      */
     public void newHistoryBranch(URL URL) {
-        while (pageIndex < currentHistory.size()) {
-            currentHistory.remove(pageIndex);
-        }
+        forwardStack.clear();
         addHistoryEntry(URL);
     }
 
@@ -76,7 +78,7 @@ public class HistoryController {
      * @return `true` if backward history exists, otherfise `false`.
      */
     public boolean hasHistory() {
-        if (!currentHistory.isEmpty() && pageIndex > 1) {
+        if (!backStack.empty()) {
             return true;
         }
         return false;
@@ -88,7 +90,7 @@ public class HistoryController {
      * @return `true` if forward history exists, otherfise `false`.
      */
     public boolean hasFuture() {
-        if (!currentHistory.isEmpty() && pageIndex < currentHistory.size()) {
+        if (!forwardStack.empty()) {
             return true;
         }
         return false;
@@ -101,7 +103,9 @@ public class HistoryController {
         if (!hasHistory())
             return;
 
-        URL page = currentHistory.get(pageIndex - 2);  // Index offset by 1!
+        URL page = backStack.pop();
+        forwardStack.push(browserWindow.getCurrentURL());
+        System.out.println(page);
 
         /** Display the new URL, popup error if it fails */
         try {
@@ -111,7 +115,6 @@ public class HistoryController {
                     + e.getMessage());
             return;
         }
-        pageIndex -= 1;
     }
 
     /**
@@ -121,7 +124,9 @@ public class HistoryController {
         if (!hasFuture())
             return;
 
-        URL page = currentHistory.get(pageIndex);      // Index offset by 1!
+        URL page = forwardStack.pop();
+        backStack.push(browserWindow.getCurrentURL());
+        System.out.println(page);
 
         /** Display the new URL, popup error if it fails */
         try {
@@ -131,7 +136,6 @@ public class HistoryController {
                     + e.getMessage());
             return;
         }
-        pageIndex += 1;
     }
 
     /**

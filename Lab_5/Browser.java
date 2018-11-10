@@ -143,7 +143,9 @@ public class Browser extends JFrame implements ActionListener, HyperlinkListener
         }
 
         /** Add history entry and update GUI */
-        historyController.addHistoryEntry(currentURL);
+        URL lastURL = browserWindow.getLastURL();
+        if (lastURL == null) return;
+        historyController.newHistoryBranch(lastURL);
         historyController.updateButtons();
     }
 

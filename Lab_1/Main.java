@@ -35,11 +35,13 @@ public class Main
 
         for (int i = 0; i < numberOfHumans; i++)
         {
-            Physicists[i] = new Physicist();
-            while (Physicists[i].getAge() < 15) // If too young to be physicist
-            {
-                Physicists[i] = new Physicist();
-            }
+            do {
+                try {
+                    Physicists[i] = new Physicist();
+                } catch(Exception e) {
+                    // Do nothing
+                }
+            } while (Physicists[i] == null);
         }
 
         for (int i = 0; i < numberOfHumans; i++)
@@ -56,11 +58,13 @@ public class Main
         }
         for (int i = 5; i < 10; i++)
         {
-            mix[i] = new Physicist();
-            while (mix[i].getAge() < 15) // If too young to be physicist
-            {
-                mix[i] = new Physicist();
-            }
+            do {
+                try {
+                    mix[i] = new Physicist();
+                } catch(Exception e) {
+                    // Do nothing
+                }
+            } while (mix[i] == null);
         }
 
         for (int i = 0; i < 10; i++)

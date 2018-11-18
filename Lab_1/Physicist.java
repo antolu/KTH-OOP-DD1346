@@ -5,7 +5,10 @@ public class Physicist extends Human implements Comparable<Human> {
 
     private int thisYear = 2018;
 
-    public Physicist() {
+    public Physicist() throws Exception {
+        if (getAge() < 15)
+            throw new Exception("Too young to be physicist!");
+
         birthYear = thisYear - getAge();
         double randPhysicsYear = (thisYear - (birthYear + 15)) * Math.random(); // Allowed range of starting years
         int randYear = thisYear - (int) Math.floor(randPhysicsYear); // Only allowed range is selected

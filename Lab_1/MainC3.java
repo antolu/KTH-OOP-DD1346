@@ -19,6 +19,9 @@ public class MainC3 {
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.err.println("Argument incorrectly formatted. Check argument " + index);
                         System.exit(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.exit(1);
                     }
                 }
                 if (args[index].equals("-F")) {
@@ -33,6 +36,9 @@ public class MainC3 {
                         System.exit(1);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.err.println("Argument incorrectly formatted. Check argument " + index);
+                        System.exit(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         System.exit(1);
                     }
                 }

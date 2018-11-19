@@ -3,24 +3,37 @@ public class Physicist extends Human implements Comparable<Human> {
 
     private int birthYear;
 
-    private int thisYear = 2018;
+    private final static int THIS_YEAR = 2018;
 
     public Physicist() throws Exception {
-        if (getAge() < 15)
-            throw new Exception("Too young to be physicist!");
 
-        birthYear = thisYear - getAge();
-        double randPhysicsYear = (thisYear - (birthYear + 15)) * Math.random(); // Allowed range of starting years
-        int randYear = thisYear - (int) Math.floor(randPhysicsYear); // Only allowed range is selected
+        birthYear = THIS_YEAR - getAge();
+        double randPhysicsYear = (THIS_YEAR - (birthYear + 15)) * Math.random(); // Allowed range of starting years
+        int randYear = THIS_YEAR - (int) Math.floor(randPhysicsYear); // Only allowed range is selected
+
+        if ((randYear - birthYear) < 15)
+            throw new Exception("Too young to be physicist!");
 
         randYear %= 100; // randYear is in real years, but we only want the last 2 digits
 
         year = randYear;
     }
 
-    public Physicist(int ageIn, String nameIn, int yearIn)
+    public Physicist(int ageIn, String nameIn, int yearIn) throws Exception
     {
         super(ageIn, nameIn);
+
+        birthYear = THIS_YEAR - ageIn;
+
+        int fysikYear = 0;
+        if (yearIn > THIS_YEAR % 100) 
+            fysikYear = yearIn + 1900;
+        else 
+            fysikYear = yearIn + 2000;
+
+        if ((fysikYear - birthYear) < 15)
+            throw new Exception("Too young to be physicist!");
+
         year = yearIn;
     }
 
